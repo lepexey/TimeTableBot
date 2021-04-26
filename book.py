@@ -3,17 +3,18 @@ import time
 
 from telegram import Bot
 
-bot = Bot(token="TOKEN")
+bot = Bot(token="1779607359:AAHK7ecuquIM_tnEkOlXlJDNwlw8kOb0_bI")
 _id = 0
 text_event = ''
+data = {}
 
 
 def job():
     bot.send_message(_id, text=f"Напоминаю: {text_event}")
 
 
-def main(chat_id, data):
-    global _id, text_event
+def main(chat_id):
+    global _id, text_event, data
     _id = chat_id
 
     for event in data:

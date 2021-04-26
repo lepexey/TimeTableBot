@@ -22,12 +22,18 @@ data = []
 
 def start(update, context):
     global chat_id
+
+    my_thread = threading.Thread(target=book.main, args=(chat_id,))
+    my_thread.start()
+
     update.message.reply_text("Для создания нового события напишите /new <название>")
 
 
 def get_help(update, context):
     update.message.reply_text(
-        "Команды: \n '/new <название' - создание нового события \n '/timetable' - для просмотра расписания")
+        "Команды: "
+        "\n '/new <название' - создание нового события "
+        "\n '/timetable' - для просмотра расписания")
 
 
 def new(update, context):
@@ -163,10 +169,14 @@ def third_response(update, context):
     else:
         context.user_data[data[1]] = [(data[0], data[2], (h, m))]
 
-    chat_id = update.message.chat_id
+    if data[1] in book.data:
+        book.data[data[1]].append((data[0], data[2], (h, m)))
+    else:
+        book.data[data[1]] = [(data[0], data[2], (h, m))]
 
-    my_thread = threading.Thread(target=book.main, args=(chat_id, context.user_data,))
-    my_thread.start()
+    chat_id = update.message.chat_id
+    data.clear()
+
     # book.main(chat_id, context.user_data)
 
     return ConversationHandler.END
@@ -215,8 +225,8 @@ def get_chat_id():
     return chat_id
 
 
-updater = Updater("TOKEN")
-bot = Bot(token="TOKEN")
+updater = Updater("1779607359:AAHK7ecuquIM_tnEkOlXlJDNwlw8kOb0_bI")
+bot = Bot(token="1779607359:AAHK7ecuquIM_tnEkOlXlJDNwlw8kOb0_bI")
 
 dispatcher = updater.dispatcher
 
